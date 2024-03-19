@@ -1,0 +1,6 @@
+flask
+torch
+elevenlabs
+transformers
+librosa
+pydub
