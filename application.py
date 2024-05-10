@@ -39,7 +39,7 @@ def upload_file():
     data = uploaded_file.read()
     print('input data:', data)
     uploaded_file.seek(0) 
-    path=".\\output\\input.mp3"
+    path=".\input.mp3"
     uploaded_file.save(path)
 
     client = ElevenLabs(
@@ -52,15 +52,16 @@ def upload_file():
     )
     audio = client.generate(text=result_string, voice=voice)
 
-    audio_bytes_io = io.BytesIO(audio)
+    audio_bytes = b''.join(audio)
+    audio_bytes_io = io.BytesIO(audio_bytes)
     audio_segment = AudioSegment.from_file(audio_bytes_io)
-    output_voice_path = os.path.join('.','output.mp3')
+    output_voice_path = os.path.join('.', 'output.mp3')
     audio_segment.export(output_voice_path, format="mp3")
-
-    audio_bytes_io.seek(0)  
-    return send_file(audio_bytes_io, as_attachment=True, attachment_filename='output.mp3')
+    audio_bytes_io.seek(0)
+    return send_file(audio_bytes_io, as_attachment=True, mimetype="audio/mpeg", download_name="output.mp3")
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 
